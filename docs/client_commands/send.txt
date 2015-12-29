@@ -6,8 +6,6 @@
     "msg": * （消息内容）
 }
 
-成功发送时服务器不响应
-
 错误代码：
 ERR_ILLEGAL: 非法操作
 ERR_CLIENT_NOT_INROOM: 当前客户端不在房间中

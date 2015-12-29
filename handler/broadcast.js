@@ -19,6 +19,8 @@ function handleBroadcast(msg) {
     var hasError = false;
     var allClients = this.room.clients;
     for (var id in allClients) {
+        if (id === this.id)
+            continue;
         try {
             allClients[id].send("message", {
                 from: this.id,

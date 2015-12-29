@@ -41,16 +41,24 @@ class RTCClient extends EventEmitter {
         }.bind(this));
         socket.on('error', this.emit.bind(this, 'error'));
 
-        socket.on('message', function (msg) {
+        socket.on('message', function (data) {
+            var msg;
+            try {
+                msg = JSON.parse(data);
+            } catch (ex) {
+                socket.close();
+                return;
+            }
+
             var fn = handlers[msg.cmd];
             if (typeof(fn) === 'function') {
                 try {
                     fn.call(this, msg);
                 } catch (ex) {
-                    this.error(errCodes.ERR_UNKNOWN_ERROR, ex.message);
+                    this.replyError(msg, errCodes.ERR_UNKNOWN_ERROR, ex.message);
                 }
             } else {
-                this.error(errCodes.ERR_UNKNOWN_COMMAND, "Unknown command %s", msg.cmd);
+                this.replyError(msg, errCodes.ERR_UNKNOWN_COMMAND, "Unknown command %s", msg.cmd);
             }
         }.bind(this));
     }
@@ -75,7 +83,7 @@ class RTCClient extends EventEmitter {
         var msg = util.format.apply(util, Array.prototype.slice.call(arguments, 2));
 
         this.send({
-            dialogId: originMsg && originMsg.dialogId|| undefined,
+            dialogId: originMsg && originMsg.dialogId || undefined,
             type: "error",
             code: code,
             message: msg

@@ -6,8 +6,6 @@
     "clientid": int （客户端ID）
 }
 
-服务器响应： enter
-
 错误代码：
 ERR_ILLEGAL: 非法操作
 ERR_CLIENT_INROOM: 客户端在某一房间中
