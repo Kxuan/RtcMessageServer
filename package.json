@@ -1,0 +1,22 @@
+{
+  "name": "apprtc-signal",
+  "version": "0.0.1",
+  "description": "The WebSocket server of apprtc",
+  "main": "start.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "webrtc",
+    "websocket"
+  ],
+  "author": "kXuan <kxuanobj@gmail.com>",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "debug": "^2.2.0",
+    "ws": "^0.8.1"
+  },
+  "devDependencies": {
+    "mocha": "^2.3.4"
+  }
+}

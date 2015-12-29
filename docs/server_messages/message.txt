@@ -1,0 +1,8 @@
+消息：message
+作用: 收到由其他客户端发送的消息时（send/broadcast指令），服务端下发该消息
+数据结构：
+{
+    "from": int(发送者ID),
+    "isBroadcast": boolean(是否为广播消息),
+    "msg": *(消息内容)
+}

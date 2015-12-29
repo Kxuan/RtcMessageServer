@@ -1,0 +1,14 @@
+命令：broadcast
+作用: 客户端向房间中广播消息
+
+数据结构：
+{
+    "msg": * （消息内容）
+}
+
+成功广播时服务器不响应
+
+错误代码：
+ERR_ILLEGAL: 非法操作
+ERR_CLIENT_NOT_INROOM: 当前客户端不在房间中
+ERR_CLIENT: 未知发送错误

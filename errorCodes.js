@@ -1,0 +1,14 @@
+exports.ERR_OK = 0x0;
+
+exports.ERR_UNKNOWN_ERROR = 0x001;
+exports.ERR_UNKNOWN_COMMAND = 0x002;
+
+exports.ERR_ILLEGAL = 0x100;
+
+exports.ERR_CLIENT = 0x200;
+exports.ERR_CLIENT_INROOM = 0x201;
+exports.ERR_CLIENT_NOT_INROOM = 0x202;
+exports.ERR_CLIENT_NOT_EXISTS = 0x203;
+
+exports.ERR_ROOM = 0x300;
+exports.ERR_ROOM_FULL = 0x301;
