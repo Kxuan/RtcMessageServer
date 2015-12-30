@@ -1,21 +1,16 @@
-//Load utils at first
+//Load configuration
 global.utils = require('./utils');
+var fs = require('fs');
 
-//Load other requirements
-var HttpsServer = require('https').Server,
-    WebSocketServer = require('ws').Server,
-    RTCClient = require('./RTCClient'),
-    RoomManager = require('./room/manager');
+var configFile = process.argv[2];
+if (!configFile) {
+    console.error("Usage: node start.js <configuration file>");
+    process.exit(1);
+}
+global.config = JSON.parse(fs.readFileSync(configFile));
+if (config.debug)
+    require('debug').enable(config.debug);
 
-/**
- * @type {RoomManager}
- */
-global.roomManager = new RoomManager();
 
-var wss = new WebSocketServer({
-    port: 8089
-});
-
-wss.on('connection', function (ws) {
-    RTCClient.bind(ws);
-});
+//Start the server
+require('./server.js');

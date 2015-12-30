@@ -4,20 +4,28 @@ var util = require('util'),
     errCodes = require("./errorCodes"),
     handlers = require('./handler');
 
-var $ws = Symbol("Private WebSocket");
+var $ws = Symbol("WebSocket"),
+    $wsCloseHandler = Symbol("WebSocket close event handler");
 
 class RTCClient extends EventEmitter {
+    /**
+     * RTCClient close event
+     *
+     * @event RTCClient#close
+     * @param {boolean} available If this value is false, send message to this client will cause an error.
+     */
+
     /*
      * Bind RTCClient to WebSocket
      *
      * @param {WebSocket} ws
      * @returns {RTCClient}
      */
-    static bind(ws) {
+    static assign(ws) {
         var client = new this(ws);
 
         ws.rtc = client;
-        client.once('close', function (stillAvailable) {
+        client.once('close', function (available) {
             delete ws.rtc;
         });
 
@@ -30,15 +38,18 @@ class RTCClient extends EventEmitter {
      */
     constructor(socket) {
         super();
+
         this[$ws] = socket;
-        /** @type null|int */
+        /** @type {null|int} */
         this.id = null;
-        /** @type null|Room */
+        /** @type {null|Room} */
         this.room = null;
 
-        socket.once('close', function () {
+        this[$wsCloseHandler] = function (code, message) {
             this.emit('close', false);
-        }.bind(this));
+        }.bind(this);
+        socket.once('close', this[$wsCloseHandler]);
+
         socket.on('error', this.emit.bind(this, 'error'));
 
         socket.on('message', function (data) {
@@ -61,6 +72,15 @@ class RTCClient extends EventEmitter {
                 this.replyError(msg, errCodes.ERR_UNKNOWN_COMMAND, "Unknown command %s", msg.cmd);
             }
         }.bind(this));
+    }
+
+    close() {
+        this.emit('close', true);
+        this.removeAllListeners();
+
+        var socket = this[$ws];
+        socket.removeListener('close', this[$wsCloseHandler]);
+        socket.close();
     }
 
     send(type, data) {
