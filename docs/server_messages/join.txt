@@ -4,5 +4,6 @@
 数据结构：
 {
     "type": "join",
-    "id": int(新进入的客户端ID)
+    "id": int(新进入的客户端ID),
+    "device": string （客户端设备类型）
 }

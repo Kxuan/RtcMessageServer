@@ -1,5 +1,4 @@
 //Load configuration
-global.utils = require('./utils');
 var fs = require('fs');
 
 var configFile = process.argv[2];

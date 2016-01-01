@@ -1,7 +1,6 @@
 "use strict";
 
-var utils = require('../utils'),
-    errorCodes = require('../errorCodes');
+var errorCodes = require('../errorCodes');
 
 /**
  * 处理send消息
@@ -11,7 +10,7 @@ var utils = require('../utils'),
 function handleSend(msg) {
     var toId = msg['to'];
 
-    if (!utils.isInteger(toId)) {
+    if (!Number.isSafeInteger(toId)) {
         this.replyError(msg, errorCodes.ERR_ILLEGAL, "'to' must be an integer.");
         return;
     }

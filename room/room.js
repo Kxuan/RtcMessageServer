@@ -1,6 +1,5 @@
 "use strict";
-var utils = require('../utils'),
-    EventEmitter = require('events').EventEmitter,
+var EventEmitter = require('events').EventEmitter,
     Debug = require('debug');
 
 var $debug = Symbol("Room's debugger"),
@@ -17,7 +16,7 @@ class Room extends EventEmitter {
      */
     constructor(id) {
         super();
-        if (!utils.isInteger(id))
+        if (!Number.isSafeInteger(id))
             throw new TypeError("id must be a integer");
 
         /** @type {int} 为空时表示房间关闭 */
@@ -97,11 +96,6 @@ class Room extends EventEmitter {
             throw new Error("room is closed");
         }
 
-        //关闭“长时间没人加入关闭房间”的定时器
-        if (this[$longEmptyCloseTimer]) {
-            clearTimeout(this[$longEmptyCloseTimer]);
-            delete this[$longEmptyCloseTimer];
-        }
         if (client.id === null) {
             throw new Error("client id is null");
         }
@@ -118,9 +112,19 @@ class Room extends EventEmitter {
             throw new Error("client already in room");
         }
 
+
+        //关闭“长时间没人加入关闭房间”的定时器
+        if (this[$longEmptyCloseTimer]) {
+            clearTimeout(this[$longEmptyCloseTimer]);
+            delete this[$longEmptyCloseTimer];
+        }
+
         //广播 join 消息
         for (var id in allClients) {
-            allClients[id].send("join", {id: client.id});
+            allClients[id].send("join", {
+                id: client.id,
+                device: client.device
+            });
         }
 
         //客户端关闭时，退出房间

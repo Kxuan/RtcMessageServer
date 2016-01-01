@@ -4,6 +4,7 @@
 {
     "type": "answer",
     "from": int(发送者ID),
+    "time": int(发送时间,服务器时间),
     "accept": boolean（是否接受请求）,
     "content": string （Answer内容，不接受时该字段为空）
 }

@@ -1,0 +1,14 @@
+命令：candidate
+作用: 客户端向房间内的另一客户端发送候选连接地址
+数据结构：
+{
+    "cmd": "candidate",
+    "to": int （接收者的客户端ID）,
+    "content": string （内容）
+}
+
+错误代码：
+ERR_ILLEGAL: 非法操作
+ERR_CLIENT_NOT_INROOM: 当前客户端不在房间中
+ERR_CLIENT_NOT_EXISTS: 接收者不在房间中
+ERR_CLIENT: 未知发送错误

@@ -3,9 +3,16 @@
 数据结构：
 {
     "cmd": "register",
+    “device": string （设备类型，取值见后文”设备类型“）,
     "roomid": int （要进入的房间ID）,
     "clientid": int （客户端ID）
 }
+
+设备类型：
+device字段需要填写下列值之一，不应该出现其他值：
+    chrome: PC端的Chrome浏览器
+    android: 手机端的Android应用程序
+
 
 错误代码：
 ERR_ILLEGAL: 非法操作

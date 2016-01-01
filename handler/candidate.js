@@ -3,11 +3,11 @@
 var errorCodes = require('../errorCodes');
 
 /**
- * 处理offer消息
+ * 处理send消息
  * @this RTCClient
  * @param {*} msg
  */
-function handleOffer(msg) {
+function handleCandidate(msg) {
     var toId = msg['to'];
 
     if (!Number.isSafeInteger(toId)) {
@@ -27,14 +27,14 @@ function handleOffer(msg) {
     }
 
     try {
-        client.send("offer", {
+        client.send("candidate", {
             from: this.id,
             time: Date.now(),
             content: msg.content
         });
     } catch (ex) {
-        this.replyError(msg, errorCodes.ERR_CLIENT, "Fail to send offer. (%s)", ex.message);
+        this.replyError(msg, errorCodes.ERR_CLIENT, "Fail to send message. (%s)", ex.message);
     }
 }
 
-module.exports = exports = handleOffer;
+module.exports = exports = handleCandidate;

@@ -46,7 +46,7 @@ class RTCClient extends EventEmitter {
         /** @type {null|Room} Which client room */
         this.room = null;
         /** @type {null|string} Which type, MobilePhone or Browser? */
-        this.type = null;
+        this.device = null;
 
         this[$wsCloseHandler] = function (code, message) {
             this.emit('close', false);

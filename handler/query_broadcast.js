@@ -1,8 +1,7 @@
 "use strict";
 
 //noinspection JSUnusedLocalSymbols
-var utils = require('../utils'),
-    errorCodes = require('../errorCodes');
+var errorCodes = require('../errorCodes');
 
 /**
  * 处理broadcast消息
