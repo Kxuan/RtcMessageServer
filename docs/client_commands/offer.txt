@@ -1,10 +1,10 @@
-命令：send
-作用: 客户端向房间中的某一用户发送消息
+命令：offer
+作用: 客户端向房间内的另一客户端发送WebRTC连接请求
 数据结构：
 {
-    "cmd": "send",
-    "to": int （接收者客户端ID）,
-    "content": * （消息内容）
+    "cmd": "offer",
+    "to": int （接收邀请的客户端ID）,
+    "content": string （Offer内容）
 }
 
 错误代码：

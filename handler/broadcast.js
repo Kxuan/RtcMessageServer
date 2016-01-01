@@ -18,15 +18,18 @@ function handleBroadcast(msg) {
 
     var hasError = false;
     var allClients = this.room.clients;
+    var sendData = {
+        from: this.id,
+        isBroadcast: true,
+        time: Date.now(),
+        content: msg.content
+    };
+    this.room.broadcasts.push(sendData);
     for (var id in allClients) {
         if (id === this.id)
             continue;
         try {
-            allClients[id].send("message", {
-                from: this.id,
-                isBroadcast: true,
-                msg: msg.msg
-            });
+            allClients[id].send("message", sendData);
         } catch (ex) {
             hasError = true;
         }

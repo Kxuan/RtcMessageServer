@@ -1,0 +1,9 @@
+消息：candidate
+作用: 收到由其他客户端发送的消息时（send/broadcast指令），服务端下发该消息
+数据结构：
+{
+    "type": "candidate",
+    "from": int(发送者ID),
+    "time": int(发送时间,服务器时间),
+    "content": string(内容)
+}

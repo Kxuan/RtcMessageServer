@@ -11,7 +11,7 @@ if (config.server.https) {
     server = https.createServer({
         key: fs.readFileSync(config.server.key),
         cert: fs.readFileSync(config.server.cert),
-        ca: config.server.ca.map(fs.readFileSync.assign(fs)),
+        ca: config.server.ca.map(fs.readFileSync.bind(fs)),
 
         requestCert: false,
         handshakeTimeout: config.server.handshakeTimeout || 10000,

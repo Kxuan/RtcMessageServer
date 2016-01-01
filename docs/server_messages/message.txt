@@ -2,7 +2,9 @@
 作用: 收到由其他客户端发送的消息时（send/broadcast指令），服务端下发该消息
 数据结构：
 {
+    "type": "message",
     "from": int(发送者ID),
     "isBroadcast": boolean(是否为广播消息),
-    "msg": *(消息内容)
+    "time": int(消息发送时间,服务器时间),
+    "content": *(消息内容)
 }

@@ -31,6 +31,8 @@ class Room extends EventEmitter {
 
         this[$debug]("create");
 
+        this.broadcasts = [];
+
         var self = this;
         process.nextTick(function () {
             if (self.isEmpty()) {

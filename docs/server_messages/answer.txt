@@ -1,0 +1,9 @@
+消息：answer
+作用: 服务端转发客户端的answer消息
+数据结构：
+{
+    "type": "answer",
+    "from": int(发送者ID),
+    "accept": boolean（是否接受请求）,
+    "content": string （Answer内容，不接受时该字段为空）
+}

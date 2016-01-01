@@ -51,7 +51,8 @@ describe("RTCClient", function () {
 
             var r = JSON.parse(received);
             assert.equal(r.type, "test");
-            assert.equal(JSON.stringify(r.data), JSON.stringify(TEST_DATA));
+            assert.equal(r.key, TEST_DATA.key);
+            assert.deepStrictEqual(r.data, TEST_DATA.data);
         });
         it("should encode data using JSON", function () {
             var TEST_DATA = {key: 123, data: [Math.random()]};

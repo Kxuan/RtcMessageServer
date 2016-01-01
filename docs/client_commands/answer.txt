@@ -1,0 +1,15 @@
+命令：answer
+作用: 客户端应答连接请求
+数据结构：
+{
+    "cmd": "answer",
+    "to": int （接收应答的客户端ID）,
+    "accept": boolean（是否接受请求）,
+    "content": string （Answer内容，不接受时不发送）
+}
+
+错误代码：
+ERR_ILLEGAL: 非法操作
+ERR_CLIENT_NOT_INROOM: 当前客户端不在房间中
+ERR_CLIENT_NOT_EXISTS: 接收者不在房间中
+ERR_CLIENT: 未知发送错误

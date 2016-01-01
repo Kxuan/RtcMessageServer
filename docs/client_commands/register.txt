@@ -2,6 +2,7 @@
 作用: 客户端向服务器请求进入某一房间
 数据结构：
 {
+    "cmd": "register",
     "roomid": int （要进入的房间ID）,
     "clientid": int （客户端ID）
 }

@@ -1,0 +1,9 @@
+消息：offer
+作用: 服务端转发客户端的offer消息
+数据结构：
+{
+    "type": "offer",
+    "from": int(发送者ID),
+    "time": int(Offer发送时间,服务器时间),
+    "content": string(Offer请求内容)
+}

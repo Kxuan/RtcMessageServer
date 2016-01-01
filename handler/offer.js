@@ -4,11 +4,11 @@ var utils = require('../utils'),
     errorCodes = require('../errorCodes');
 
 /**
- * 处理send消息
+ * 处理offer消息
  * @this RTCClient
  * @param {*} msg
  */
-function handleSend(msg) {
+function handleOffer(msg) {
     var toId = msg['to'];
 
     if (!utils.isInteger(toId)) {
@@ -28,15 +28,14 @@ function handleSend(msg) {
     }
 
     try {
-        client.send("message", {
+        client.send("offer", {
             from: this.id,
-            isBroadcast: false,
             time: Date.now(),
             content: msg.content
         });
     } catch (ex) {
-        this.replyError(msg, errorCodes.ERR_CLIENT, "Fail to send message. (%s)", ex.message);
+        this.replyError(msg, errorCodes.ERR_CLIENT, "Fail to send offer. (%s)", ex.message);
     }
 }
 
-module.exports = exports = handleSend;
+module.exports = exports = handleOffer;

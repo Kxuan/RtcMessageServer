@@ -2,6 +2,7 @@
 作用: 客户端请求房间信息时服务器响应内容
 数据结构：
 {
+    "type": "room",
     "id": int (房间ID)
     "clients": [
         int(客户端ID)

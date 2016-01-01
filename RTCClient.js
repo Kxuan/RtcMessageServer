@@ -3,6 +3,7 @@ var util = require('util'),
     EventEmitter = require('events').EventEmitter,
     errCodes = require("./errorCodes"),
     handlers = require('./handler');
+var assert = require('assert');
 
 var $ws = Symbol("WebSocket"),
     $wsCloseHandler = Symbol("WebSocket close event handler");
@@ -40,10 +41,12 @@ class RTCClient extends EventEmitter {
         super();
 
         this[$ws] = socket;
-        /** @type {null|int} */
+        /** @type {null|int} Client Identity*/
         this.id = null;
-        /** @type {null|Room} */
+        /** @type {null|Room} Which client room */
         this.room = null;
+        /** @type {null|string} Which type, MobilePhone or Browser? */
+        this.type = null;
 
         this[$wsCloseHandler] = function (code, message) {
             this.emit('close', false);
@@ -53,23 +56,22 @@ class RTCClient extends EventEmitter {
         socket.on('error', this.emit.bind(this, 'error'));
 
         socket.on('message', function (data) {
-            var msg;
             try {
-                msg = JSON.parse(data);
+                var msg = JSON.parse(data);
+
+                var fn = handlers[msg.cmd];
+                if (typeof(fn) === 'function') {
+                    try {
+                        fn.call(this, msg);
+                    } catch (ex) {
+                        this.replyError(msg, errCodes.ERR_UNKNOWN_ERROR, ex.message);
+                    }
+                } else {
+                    this.replyError(msg, errCodes.ERR_UNKNOWN_COMMAND, "Unknown command %s", msg.cmd);
+                }
             } catch (ex) {
                 socket.close();
                 return;
-            }
-
-            var fn = handlers[msg.cmd];
-            if (typeof(fn) === 'function') {
-                try {
-                    fn.call(this, msg);
-                } catch (ex) {
-                    this.replyError(msg, errCodes.ERR_UNKNOWN_ERROR, ex.message);
-                }
-            } else {
-                this.replyError(msg, errCodes.ERR_UNKNOWN_COMMAND, "Unknown command %s", msg.cmd);
             }
         }.bind(this));
     }
@@ -86,13 +88,21 @@ class RTCClient extends EventEmitter {
     send(type, data) {
         var ws = this[$ws];
         if (typeof type === "string") {
-            if (data !== undefined) {
-                ws.send(JSON.stringify({
-                    type: type,
-                    data: data
-                }));
-            } else {
-                ws.send(type);
+            switch (typeof data) {
+                case 'undefined':
+                    ws.send(type);
+                    break;
+                case 'object':
+                    assert(data.type === undefined || data.type == type);
+                    data.type = type;
+                    ws.send(JSON.stringify(data));
+                    break;
+                default:
+                    ws.send(JSON.stringify({
+                        type: type,
+                        data: data
+                    }));
+                    break;
             }
         } else {
             return ws.send(JSON.stringify(type));
