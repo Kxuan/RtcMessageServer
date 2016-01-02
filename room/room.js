@@ -84,6 +84,18 @@ class Room extends EventEmitter {
         this[$debug]("closed");
     }
 
+    broadcast() {
+        var allClients = this[$clients],
+            client;
+        for (var id in allClients) {
+            client = allClients[id];
+            try {
+                client.send.apply(client, arguments);
+            } catch (ignore) {
+            }
+        }
+    }
+
     /**
      * 客户端进入该房间
      *
@@ -120,12 +132,10 @@ class Room extends EventEmitter {
         }
 
         //广播 join 消息
-        for (var id in allClients) {
-            allClients[id].send("join", {
-                id: client.id,
-                device: client.device
-            });
-        }
+        this.broadcast("join", {
+            id: client.id,
+            device: client.device
+        });
 
         //客户端关闭时，退出房间
         client[$clientQuitHandler] = this.quit.bind(this, client);
@@ -159,10 +169,7 @@ class Room extends EventEmitter {
         this.emit('quit', client);
 
         //广播leave消息
-        var allClients = this[$clients];
-        for (var id in allClients) {
-            allClients[id].send("leave", {id: client.id});
-        }
+        this.broadcast("leave", {id: client.id});
 
         //10秒后再没有人进入房间，则关闭房间
         if (this.isEmpty()) {

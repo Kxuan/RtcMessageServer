@@ -30,6 +30,7 @@ function handleOffer(msg) {
         client.send("offer", {
             from: this.id,
             time: Date.now(),
+            isHelper: !!msg.isHelper,
             content: msg.content
         });
     } catch (ex) {

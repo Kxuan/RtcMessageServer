@@ -4,6 +4,7 @@
 {
     "cmd": "offer",
     "to": int （接收邀请的客户端ID）,
+    "isHelper":boolean（是否为Helper邀请）,
     "content": string （Offer内容）
 }
 

@@ -5,5 +5,6 @@
     "type": "offer",
     "from": int(发送者ID),
     "time": int(Offer发送时间,服务器时间),
+    "isHelper": boolean（是否为Helper邀请）,
     "content": string(Offer请求内容)
 }

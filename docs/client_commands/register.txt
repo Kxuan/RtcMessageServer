@@ -3,7 +3,7 @@
 数据结构：
 {
     "cmd": "register",
-    “device": string （设备类型，取值见后文”设备类型“）,
+    “device": string （设备类型，取值见”设备类型“）,
     "roomid": int （要进入的房间ID）,
     "clientid": int （客户端ID）
 }

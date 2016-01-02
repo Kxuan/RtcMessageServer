@@ -41,7 +41,7 @@ function handleRegister(msg) {
         room.join(this);
     } catch (ex) {
         this.replyError(msg, errorCodes.ERR_ROOM, "Fail on join to room. (%s)", ex.message);
-
+        console.error(ex);
         if (this.room) {
             this.room.quit(this);
         }
