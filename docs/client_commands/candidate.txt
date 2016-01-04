@@ -3,8 +3,12 @@
 数据结构：
 {
     "cmd": "candidate",
-    "to": int （接收者的客户端ID）,
-    "content": string （内容）
+    "to": uint64 （接收者的客户端ID）,
+    "content": {
+       "id": string（sdpMid）,
+       "label": int（sdpMLineIndex）,
+       "candidate": string （sdp）
+    }
 }
 
 错误代码：

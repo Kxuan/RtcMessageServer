@@ -3,7 +3,7 @@
 数据结构：
 {
     "cmd": "answer",
-    "to": int （接收应答的客户端ID）,
+    "to": uint64 （接收应答的客户端ID）,
     "accept": boolean（是否接受请求）,
     "content": string （Answer内容，不接受时不发送）
 }

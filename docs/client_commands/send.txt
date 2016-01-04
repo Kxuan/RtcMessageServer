@@ -3,7 +3,7 @@
 数据结构：
 {
     "cmd": "send",
-    "to": int （接收者客户端ID）,
+    "to": uint64 （接收者客户端ID）,
     "content": * （消息内容）
 }
 

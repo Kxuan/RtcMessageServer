@@ -1,0 +1,10 @@
+命令：query_broadcast
+作用: 客户端向服务器请求房间中所有的广播消息
+数据结构：
+{
+    "cmd": "query_broadcast"
+}
+
+错误代码：
+ERR_CLIENT_NOT_INROOM: 当前客户端不在房间中
+ERR_CLIENT: 未知发送错误

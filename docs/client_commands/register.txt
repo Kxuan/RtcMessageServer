@@ -4,8 +4,8 @@
 {
     "cmd": "register",
     “device": string （设备类型，取值见”设备类型“）,
-    "roomid": int （要进入的房间ID）,
-    "clientid": int （客户端ID）
+    "roomid": uint32 （要进入的房间ID）,
+    "clientid": uint64 （客户端ID）
 }
 
 设备类型：
