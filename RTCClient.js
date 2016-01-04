@@ -116,7 +116,8 @@ class RTCClient extends EventEmitter {
             dialogId: originMsg && originMsg.dialogId || undefined,
             type: "error",
             code: code,
-            message: msg
+            message: msg,
+            originMessage: JSON.stringify(originMsg)
         });
     }
 
