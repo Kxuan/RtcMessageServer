@@ -6,24 +6,22 @@ var errorCodes = require('../errorCodes');
  * 处理answer消息
  * @this RTCClient
  * @param {*} msg
+ * @returns Promise
  */
 function handleAnswer(msg) {
     var toId = msg['to'];
 
     if (!Number.isSafeInteger(toId)) {
-        this.replyError(msg, errorCodes.ERR_ILLEGAL, "'to' must be an integer.");
-        return;
+        return Promise.reject(errorCodes.ERR_ILLEGAL);
     }
 
     if (this.room === null) {
-        this.replyError(msg, errorCodes.ERR_CLIENT_NOT_INROOM, "You must enter a room");
-        return;
+        return Promise.reject(errorCodes.ERR_CLIENT_NOT_INROOM);
     }
 
     var client = this.room.client(toId);
     if (!client) {
-        this.replyError(msg, errorCodes.ERR_CLIENT_NOT_EXISTS, "Client not in room");
-        return;
+        return Promise.reject(errorCodes.ERR_CLIENT_NOT_EXISTS);
     }
 
     try {
@@ -34,8 +32,10 @@ function handleAnswer(msg) {
             content: msg.content
         });
     } catch (ex) {
-        this.replyError(msg, errorCodes.ERR_CLIENT, "Fail to send answer. (%s)", ex.message);
+        return Promise.reject(ex);
     }
+
+    return Promise.resolve();
 }
 
 module.exports = exports = handleAnswer;

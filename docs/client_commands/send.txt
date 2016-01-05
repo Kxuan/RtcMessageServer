@@ -8,7 +8,7 @@
 }
 
 错误代码：
-ERR_ILLEGAL: 非法操作
+ERR_ILLEGAL_ARGUMENTS: 参数错误
 ERR_CLIENT_NOT_INROOM: 当前客户端不在房间中
 ERR_CLIENT_NOT_EXISTS: 接收者不在房间中
 ERR_CLIENT: 未知发送错误

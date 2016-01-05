@@ -60,15 +60,35 @@ class RTCClient extends EventEmitter {
                 var msg = JSON.parse(data);
 
                 var fn = handlers[msg.cmd];
-                if (typeof(fn) === 'function') {
-                    try {
-                        fn.call(this, msg);
-                    } catch (ex) {
-                        this.replyError(msg, errCodes.ERR_UNKNOWN_ERROR, ex.message);
-                    }
-                } else {
+                if (typeof(fn) !== 'function') {
                     this.replyError(msg, errCodes.ERR_UNKNOWN_COMMAND, "Unknown command %s", msg.cmd);
+                    return;
                 }
+
+                var promise = fn.call(this, msg);
+                if (promise === undefined) {
+                    console.error(util.format("command handler must returns a Promise, but %s returns a %s", fn.name, typeof promise));
+                    return;
+                }
+
+
+                if (msg.dialogId !== undefined) {
+                    promise = promise.then(function (result) {
+                        this.reply(msg, "ok", {
+                            result: result
+                        });
+                    }.bind(this))
+                }
+                promise.catch(function (err) {
+                    if (typeof err === 'number') {
+                        this.replyError(msg, err, "%s", errCodes.messages[err]);
+                    } else if (typeof err === 'string') {
+                        this.replyError(msg, errCodes.ERR_CLIENT, "%s", err);
+                    } else if (err instanceof Error) {
+                        this.replyError(msg, errCodes.ERR_UNKNOWN_ERROR, "%s", err.message);
+                    }
+                }.bind(this));
+
             } catch (ex) {
                 socket.close();
                 return;

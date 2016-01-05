@@ -6,18 +6,20 @@ var errorCodes = require('../errorCodes');
  * 处理broadcast消息
  * @this RTCClient
  * @param {*} msg
+ * @returns Promise
  */
 function handleLeave(msg) {
     //当前用户不在房间中
     if (this.room === null) {
-        this.replyError(msg, errorCodes.ERR_CLIENT_NOT_INROOM, "You are not in a room");
-        return;
+        return Promise.reject(errorCodes.ERR_CLIENT_NOT_INROOM);
     }
+
     try {
         this.room.quit(this);
     } catch (ex) {
-        this.replyError(msg, errorCodes.ERR_CLIENT, "Some errors occurred during the delivery message.");
+        return Promise.reject(ex);
     }
+    return Promise.resolve();
 }
 
 module.exports = exports = handleLeave;

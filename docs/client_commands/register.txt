@@ -15,7 +15,9 @@ device字段需要填写下列值之一，不应该出现其他值：
 
 
 错误代码：
+ERR_ILLEGAL_ARGUMENTS: 参数错误
 ERR_ILLEGAL: 非法操作
 ERR_CLIENT_INROOM: 客户端在某一房间中
+ERR_CLIENT_INROOM: 客户端已在房间中
 ERR_ROOM_FULL: 房间满
 ERR_ROOM: 未知房间错误

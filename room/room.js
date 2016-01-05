@@ -84,7 +84,7 @@ class Room extends EventEmitter {
         this[$debug]("closed");
     }
 
-    broadcast() {
+    broadcast(data) {
         var allClients = this[$clients],
             client;
         for (var id in allClients) {

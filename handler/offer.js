@@ -6,36 +6,35 @@ var errorCodes = require('../errorCodes');
  * 处理offer消息
  * @this RTCClient
  * @param {*} msg
+ * @returns Promise
  */
 function handleOffer(msg) {
     var toId = msg['to'];
 
     if (!Number.isSafeInteger(toId)) {
-        this.replyError(msg, errorCodes.ERR_ILLEGAL, "'to' must be an integer.");
-        return;
+        return Promise.reject(errorCodes.ERR_ILLEGAL);
     }
 
     if (this.room === null) {
-        this.replyError(msg, errorCodes.ERR_CLIENT_NOT_INROOM, "You must enter a room");
-        return;
+        return Promise.reject(errorCodes.ERR_CLIENT_NOT_INROOM);
     }
 
-    var client = this.room.client(toId);
-    if (!client) {
-        this.replyError(msg, errorCodes.ERR_CLIENT_NOT_EXISTS, "Client not in room");
-        return;
+    var toClient = this.room.client(toId);
+    if (!toClient) {
+        return Promise.reject(errorCodes.ERR_CLIENT_NOT_EXISTS);
     }
 
     try {
-        client.send("offer", {
+        toClient.send("offer", {
             from: this.id,
             time: Date.now(),
             isHelper: !!msg.isHelper,
             content: msg.content
         });
     } catch (ex) {
-        this.replyError(msg, errorCodes.ERR_CLIENT, "Fail to send offer. (%s)", ex.message);
+        return Promise.reject(errorCodes.ERR_CLIENT);
     }
+    return Promise.resolve();
 }
 
 module.exports = exports = handleOffer;
