@@ -1,0 +1,11 @@
+命令：offer
+作用: 客户端离开房间
+数据结构：
+{
+    "cmd": "leave"
+}
+
+错误代码：
+ERR_ILLEGAL: 非法操作
+ERR_CLIENT_NOT_INROOM: 当前客户端不在房间中
+ERR_CLIENT: 未知错误
