@@ -5,6 +5,9 @@
     "type": "room",
     "id": int (房间ID)
     "clients": [
-        int(客户端ID)
+        {
+            "id":int(客户端ID)
+            "device": string（客户端设备类型,见客户端register指令)
+        }
     ](房间中已存在的客户端，包括当前客户端)
 }

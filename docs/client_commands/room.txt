@@ -1,0 +1,11 @@
+命令：room
+作用: 获取当前所在房间信息
+数据结构：
+{
+    "cmd": "room"
+}
+
+错误代码：
+ERR_ILLEGAL_ARGUMENTS: 参数错误
+ERR_CLIENT_NOT_INROOM: 当前客户端不在房间中
+ERR_CLIENT: 未知错误

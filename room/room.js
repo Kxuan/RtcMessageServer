@@ -188,7 +188,14 @@ class Room extends EventEmitter {
             return null;
         return {
             id: this.id,
-            clients: Object.keys(this.clients)
+            clients: Object.keys(this.clients).map(function (clientId) {
+                var client = this.clients[clientId];
+
+                return {
+                    id: clientId,
+                    device: client.device
+                }
+            }, this)
         }
     }
 

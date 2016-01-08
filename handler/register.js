@@ -25,7 +25,7 @@ function handleRegister(msg) {
         return Promise.reject(errorCodes.ERR_ROOM_FULL);
     }
 
-    //当前用户还没有ID，使用客户端提供的ID
+    //当前客户端还没有ID，使用客户端提供的ID，如果当前客户端已有ID，则验证两个ID是否相同
     if (this.id === null) {
         this.id = clientId;
         isIdSettingByThisHandler = true;
