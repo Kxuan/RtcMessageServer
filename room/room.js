@@ -205,7 +205,7 @@ class Room extends EventEmitter {
      * @returns {RTCClient}
      */
     client(clientId) {
-        var allClients = this[$clients];
+        let allClients = this[$clients];
         return allClients[clientId];
     }
 }

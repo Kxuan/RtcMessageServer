@@ -1,3 +1,5 @@
+"use strict";
+
 var fs = require('fs'),
     debug = require('debug')("server"),
     WebSocketServer = require('ws').Server,
@@ -7,7 +9,7 @@ var fs = require('fs'),
 var server;
 
 if (config.server.https) {
-    var https = require('https');
+    let https = require('https');
     server = https.createServer({
         key: fs.readFileSync(config.server.key),
         cert: fs.readFileSync(config.server.cert),
@@ -18,7 +20,7 @@ if (config.server.https) {
         rejectUnauthorized: false
     });
 } else {
-    var http = require('http');
+    let http = require('http');
     server = http.createServer();
 }
 

@@ -23,7 +23,7 @@ class RTCClient extends EventEmitter {
      * @returns {RTCClient}
      */
     static assign(ws) {
-        var client = new this(ws);
+        let client = new this(ws);
 
         ws.rtc = client;
         client.once('close', function (available) {
@@ -57,16 +57,16 @@ class RTCClient extends EventEmitter {
 
         socket.on('message', function (data) {
             try {
-                var msg = JSON.parse(data);
+                let msg = JSON.parse(data);
 
-                var fn = handlers[msg.cmd];
+                let fn = handlers[msg.cmd];
                 if (typeof(fn) !== 'function') {
                     this.replyError(msg, errCodes.ERR_UNKNOWN_COMMAND, "Unknown command %s", msg.cmd);
                     return;
                 }
 
-                var promise = fn.call(this, msg);
-                if (promise === undefined) {
+                let promise = fn.call(this, msg);
+                if (!(promise instanceof Promise)) {
                     console.error(util.format("command handler must returns a Promise, but %s returns a %s", fn.name, typeof promise));
                     return;
                 }
@@ -106,7 +106,7 @@ class RTCClient extends EventEmitter {
     }
 
     send(type, data) {
-        var ws = this[$ws];
+        let ws = this[$ws];
         if (typeof type === "string") {
             switch (typeof data) {
                 case 'undefined':
@@ -130,7 +130,7 @@ class RTCClient extends EventEmitter {
     }
 
     replyError(originMsg, code) {
-        var msg = util.format.apply(util, Array.prototype.slice.call(arguments, 2));
+        let msg = util.format.apply(util, Array.prototype.slice.call(arguments, 2));
 
         this.send({
             dialogId: originMsg && originMsg.dialogId || undefined,
@@ -142,11 +142,18 @@ class RTCClient extends EventEmitter {
     }
 
     reply(originMsg, type, data) {
-        return this.send({
-            dialogId: originMsg && originMsg.dialogId || undefined,
-            type: type,
-            data: data
-        });
+        if (originMsg && originMsg.dialogId !== undefined) {
+            return this.send({
+                dialogId: originMsg.dialogId,
+                type: type,
+                data: data
+            });
+        } else {
+            return this.send({
+                type: type,
+                data: data
+            });
+        }
     }
 }
 
