@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var util = require('util');
+var open = require('open');
 var express = require('express');
 var debug = require('debug')('installer');
 var app = express();
@@ -13,7 +14,7 @@ app.put('/save', function (req, res, next) {
         return;
     }
     var postData = new Buffer(length),
-        ptr      = 0;
+        ptr = 0;
     req.on('data', function (chunk) {
         chunk.copy(postData, ptr);
         ptr += chunk.length;
@@ -23,7 +24,7 @@ app.put('/save', function (req, res, next) {
                 .then(function (filename) {
 
                     res.send({
-                        error:    null,
+                        error: null,
                         filename: filename
                     });
                 })
@@ -44,27 +45,29 @@ app.listen(function () {
     } else {
         url = util.format("http://[%s]:%d/", address.address, address.port);
     }
-    var open = require('open');
     open(url, null, function (err) {
         if (err instanceof Error) {
             debug("Installer can not open your default web browser. use your web browser to access these addresses:");
-            var os = require('os');
-            var ifs = os.networkInterfaces();
-            for (var ifname in ifs) {
-                ifs[ifname].forEach(function (addr) {
-                    switch (addr.family) {
-                        case 'IPv4':
-                            debug("http://%s:%d", addr.address, address.port);
-                            break;
-                        case 'IPv6':
-                            debug("http://[%s]:%d", addr.address, address.port);
-                            break;
-                    }
-                })
-            }
+            dumpAccessURL(address.port);
         }
     });
 });
+function dumpAccessURL(port) {
+    var os = require('os');
+    var ifs = os.networkInterfaces();
+    for (var ifname in ifs) {
+        ifs[ifname].forEach(function (addr) {
+            switch (addr.family) {
+                case 'IPv4':
+                    debug("http://%s:%d", addr.address, port);
+                    break;
+                case 'IPv6':
+                    debug("http://[%s]:%d", addr.address, port);
+                    break;
+            }
+        })
+    }
+}
 function tryConfigFile(filename, data) {
     return function () {
         return new Promise(function (resolve, reject) {
