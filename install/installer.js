@@ -39,11 +39,10 @@ app.put('/save', function (req, res, next) {
 app.listen(function () {
     var address = this.address();
     debug("Installer is Listening on %d", address.port);
-    var url;
-    if (address.family.toLowerCase() == 'ipv6') {
-        url = util.format("http://[%s]:%d/", address.address, address.port);
-    } else {
-        url = util.format("http://[%s]:%d/", address.address, address.port);
+    var url = getLocalUrl(address.port);
+    if (!url) {
+        debug("Can not found any local address. You should try it yourself.");
+        return;
     }
     open(url, null, function (err) {
         if (err instanceof Error) {
@@ -52,6 +51,25 @@ app.listen(function () {
         }
     });
 });
+
+function getLocalUrl(port) {
+    var url = null;
+    var ifs = os.networkInterfaces();
+    for (var ifname in ifs) {
+        for (var i = 0; i < ifs[ifname].length; i++) {
+            var addr = ifs[ifname][i];
+            switch (addr.family) {
+                case 'IPv4':
+                    return util.format("http://%s:%d", addr.address, port);
+                    break;
+                case 'IPv6':
+                    url = util.format("http://[%s]:%d", addr.address, port);
+                    break;
+            }
+        }
+    }
+    return url;
+}
 function dumpAccessURL(port) {
     var os = require('os');
     var ifs = os.networkInterfaces();
