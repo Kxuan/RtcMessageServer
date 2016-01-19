@@ -126,11 +126,16 @@ function testConfig(rawData) {
     if (!config) {
         return Promise.reject(new Error("Parse JSON Error"));
     }
+    var port = +config.server.listen;
+    if (isNaN(port) || port <= 0 || port > 0xffff) {
+        return Promise.reject(new Error("当前仅支持监听TCP端口号"));
+    }
     var p = Promise.resolve();
 
     if (config.debug.redirect) {
         p = p.then(checkFileWritable(config.debug.output));
     }
+
     p = p.then(checkFileReadable(config.server.key));
     p = p.then(checkFileReadable(config.server.cert));
     config.server.ca.forEach(function (filename) {
