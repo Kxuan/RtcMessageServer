@@ -1,4 +1,5 @@
 var fs = require('fs');
+var os = require('os');
 var path = require('path');
 var util = require('util');
 var open = require('open');
