@@ -3,12 +3,12 @@
 var errorCodes = require('../errorCodes');
 
 /**
- * 处理broadcast消息
+ * 处理room指令
  * @this RTCClient
  * @param {*} msg
  * @returns Promise
  */
-function handleLeave(msg) {
+function handler(msg) {
     //当前用户不在房间中
     if (this.room === null) {
         return Promise.reject(errorCodes.ERR_CLIENT_NOT_INROOM);
@@ -24,4 +24,4 @@ function handleLeave(msg) {
     return Promise.resolve();
 }
 
-module.exports = exports = handleLeave;
+module.exports = exports = handler;

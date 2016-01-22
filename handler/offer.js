@@ -3,12 +3,12 @@
 var errorCodes = require('../errorCodes');
 
 /**
- * 处理offer消息
+ * 处理offer指令
  * @this RTCClient
  * @param {*} msg
  * @returns Promise
  */
-function handleOffer(msg) {
+function handler(msg) {
     var toId = msg['to'];
 
     if (!Number.isSafeInteger(toId)) {
@@ -37,4 +37,4 @@ function handleOffer(msg) {
     return Promise.resolve();
 }
 
-module.exports = exports = handleOffer;
+module.exports = exports = handler;

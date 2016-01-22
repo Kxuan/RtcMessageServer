@@ -3,12 +3,12 @@
 var errorCodes = require('../errorCodes');
 
 /**
- *
+ * 处理register指令
  * @this RTCClient
  * @param {*} msg
  * @returns Promise
  */
-function handleRegister(msg) {
+function handler(msg) {
     var isIdSettingByThisHandler = false;
     var roomId = msg['roomid'],
         clientId = msg['clientid'];
@@ -49,4 +49,4 @@ function handleRegister(msg) {
     return Promise.resolve(this.room.info());
 }
 
-module.exports = exports = handleRegister;
+module.exports = exports = handler;
